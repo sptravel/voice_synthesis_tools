@@ -9,7 +9,7 @@ header = {"Content-Type": "application/json"}
 post_dict = {'text': '', 'lang_type': 'my-MM', 'format': 'wav'}
 
 
-def synthesis_post(list_index, index, text, lang):
+def synthesis_post(list_index, index, text, lang, save_dir):
     post_dict['text'] = text
     post_dict['lang_type'] = lang
     post_json = json.dumps(post_dict)
@@ -24,15 +24,15 @@ def synthesis_post(list_index, index, text, lang):
     else:
         status = "0-00000"
         wav_data = base64.b64decode(result_dict['data'])
-        f1=open('%s-%s-%s.wav'%(status, list_index, index), 'wb')
+        f1=open('%s/%s-%s-%s.wav'%(save_dir, status, list_index, index), 'wb')
         f1.write(wav_data)
 
 
 
-def voice_synthesis(list_index, text_list, text_lang):
+def voice_synthesis(list_index, text_list, text_lang, save_dir):
     maxlen = len(text_list)
     for i in range(0,maxlen):
-        synthesis_post(list_index, i, text_list[i], text_lang)
+        synthesis_post(list_index, i, text_list[i], text_lang, save_dir)
 
 
 def split_list(in_list, split_num):
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     process_lines_list = split_list(f1_lines, multi_process_num)
     process_list = []
     for i in range(multi_process_num):  #开启5个子进程执行fun1函数
-        p = Process(target=voice_synthesis, args=(i, process_lines_list[i], process_lang, )) #实例化进程对象
+        p = Process(target=voice_synthesis, args=(i, process_lines_list[i], process_lang,out_dir_path, )) #实例化进程对象
         p.start()
         process_list.append(p)
 
