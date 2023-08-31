@@ -47,7 +47,7 @@ if __name__ == '__main__':
     out_dir_path = sys.argv[2]
     multi_process_num = int(sys.argv[3])
     process_lang = sys.argv[4]
-    f1 = open(process_list_path, 'rb', encoding='utf-8')
+    f1 = open(process_list_path, 'r', encoding='utf-8')
     f1_lines = f1.readlines()
     process_lines_list = split_list(f1_lines, multi_process_num)
     process_list = []
